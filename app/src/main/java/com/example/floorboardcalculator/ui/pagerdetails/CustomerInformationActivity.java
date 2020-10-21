@@ -1,10 +1,11 @@
 package com.example.floorboardcalculator.ui.pagerdetails;
 
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.print.PrintAttributes;
+import android.print.PrintManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ import com.example.floorboardcalculator.ui.mainpg.ZoomAnimation;
 import com.example.floorboardcalculator.ui.pagerdetails.fragments.PagerListener;
 import com.example.floorboardcalculator.ui.pdf.PDFDoneListener;
 import com.example.floorboardcalculator.ui.pdf.PDFExporter;
-import com.example.floorboardcalculator.ui.pdf.PDFViewer;
+import com.example.floorboardcalculator.ui.pdf.PrintProcessAdapter;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -43,8 +44,12 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -347,13 +352,11 @@ public class CustomerInformationActivity extends AppCompatActivity implements Sw
     public class PdfGenerated implements PDFDoneListener {
         @Override
         public void onPdfDone(String fileName, String url) {
-            Intent i = new Intent(CustomerInformationActivity.this, PDFViewer.class);
-            i.putExtra("path_str", url);
-            i.putExtra("file_name", fileName);
+            DateFormat format = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.UK);
 
-            Log.d("TEST", url);
-
-            startActivity(i);
+            PrintManager printManager = (PrintManager) getSystemService(Context.PRINT_SERVICE);
+            String jobName = "checklist_" + format.format(new Date());
+            printManager.print(jobName, new PrintProcessAdapter(CustomerInformationActivity.this, fileName), new PrintAttributes.Builder().build());
         }
     }
 }
