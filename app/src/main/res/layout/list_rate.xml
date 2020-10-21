@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_rate_layout"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="?android:attr/listPreferredItemHeightLarge"
+    android:background="#999999"
+    android:layout_margin="8dp">
+
+    <TextView
+        android:id="@+id/list_rateName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="[Rate Name]"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:paddingTop="3sp"
+        android:textColor="#ffffff"
+        android:paddingLeft="6sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/list_baseRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="[Base Rate]"
+        android:textSize="14sp"
+        android:paddingLeft="6sp"
+        android:paddingBottom="3sp"
+        android:textColor="#ffffff"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/list_abbr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Abbr: []"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:textColor="#ffffff"
+        android:paddingBottom="3sp"
+        android:paddingRight="6sp" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_select_radio"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
+
+</RelativeLayout>

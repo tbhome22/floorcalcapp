@@ -1,0 +1,90 @@
+<resources>
+    <string name="app_name">Floor Board Calculator</string>
+    <string name="detail_name">Customer Details</string>
+    <string name="plan_name">Floor Plan</string>
+    <string name="title_home">Dashboard</string>
+    <string name="title_dashboard">Record List</string>
+    <string name="title_addcustomer">Add New Customer</string>
+    <string name="title_rate">Rate</string>
+    <string name="title_notifications">Settings</string>
+    <string name="db_name">floorareacalc-xvnjr</string>
+    <string name="db_main">FloorRecord</string>
+    <string name="db_user">XfhM205q8MxWNsEubsS5E8je8DwMvWpE6gH2wLSnBdFcfY0P5vSqT3zwmRcUasO3</string>
+    <string name="gmap_api">AIzaSyBJ2tDl_Ul9bG3QYSyp-UkMCQz0L1y9yl0</string>
+    <string name="db_service">mongodb-atlas</string>
+    <string name="company_1">App by Two Brothers Home Renovation (SA0551750-X)</string>
+    <string name="company_2">Two Brothers Home Renovation</string>
+    <string name="company_reg">Registration No: SA0551750-X</string>
+
+    <string name="build_type_01">Building: Flat</string>
+    <string name="build_type_02">Building: Condominium</string>
+    <string name="build_type_03">Building: Terrace House</string>
+    <string name="build_type_04">Building: Semi-D</string>
+    <string name="build_type_05">Building: Bungalow</string>
+    <string name="build_type_06">Building: Apartment</string>
+    <string name="metreSq">m&lt;sup&gt;&lt;small&gt;2&lt;/small&gt;&lt;/sup&gt;</string>
+    <string name="feetSq">ft&lt;sup&gt;&lt;small&gt;2&lt;/small&gt;&lt;/sup&gt;</string>
+    <string name="rate_word">Section 1: RM %.2f \nSection 2: RM %.2f \nSection 3: RM %.2f</string>
+
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_yes">YES</string>
+    <string name="btn_no">NO</string>
+    <string name="loading">Loading...</string>
+    <string name="unit_imp">Imperial</string>
+    <string name="unit_met">Metric</string>
+    <string name="btn_off">OFF</string>
+    <string name="btn_on">ON</string>
+
+    <string name="step_01">Step 1</string>
+    <string name="step_02">Step 2</string>
+    <string name="step_03">Step 3</string>
+    <string name="step_04">Step 4</string>
+    <string name="step_05">Step 5</string>
+
+    <string name="step_title_01">Customer Information</string>
+    <string name="step_title_02">Building Information</string>
+    <string name="step_title_03">Floor Information</string>
+    <string name="step_title_04">Floor Plan</string>
+    <string name="step_title_05">Confirmation</string>
+    
+    <string-array name="si_metric">
+        <item>Auto</item>
+        <item>Metres (m)</item>
+        <item>Centimetres (cm)</item>
+        <item>Millimetres (mm)</item>
+        <item>Metres-Centimetres (m-cm)</item>
+    </string-array>
+
+    <string-array name="si_imperial">
+        <item>Auto</item>
+        <item>Feet (ft)</item>
+        <item>Inch (in)</item>
+        <item>Feet-Inch (ft-in)</item>
+    </string-array>
+
+    <string-array name="input_select_01">
+        <item>In Feet</item>
+        <item>In Centimetre</item>
+    </string-array>
+
+    <string-array name="building_type">
+        <item>Flat</item>
+        <item>Condominium</item>
+        <item>Terrace House</item>
+        <item>Semi-D</item>
+        <item>Bungalow</item>
+        <item>Apartment</item>
+    </string-array>
+
+    <string name="add_notice">
+        &lt;ol&gt;
+        &lt;li&gt;Please check carefully, customer details not able to change once edited.&lt;/li&gt;
+        &lt;li&gt;Please check all information provided is correct.&lt;/li&gt;
+        &lt;li&gt;Please check all area measurement provided is correct. Additional charge may be imposed if incorrect information is provided&lt;/li&gt;
+        &lt;/ol&gt;
+    </string>
+
+    <string name="add_confirm_check">I hereby agree that the information provided is true.</string>
+
+</resources>

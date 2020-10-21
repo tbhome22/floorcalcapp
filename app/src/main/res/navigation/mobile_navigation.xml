@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_mainpg">
+
+    <fragment
+        android:id="@+id/navigation_mainpg"
+        android:name="com.example.floorboardcalculator.ui.mainpg.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_mainpage" />
+
+    <fragment
+        android:id="@+id/navigation_listpg"
+        android:name="com.example.floorboardcalculator.ui.lists.ListDataFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_listpage" />
+
+    <fragment
+        android:id="@+id/navigation_ratepg"
+        android:name="com.example.floorboardcalculator.ui.rate.RateFragment"
+        android:label="@string/title_rate"
+        tools:layout="@layout/fragment_ratepage" />
+
+    <fragment
+        android:id="@+id/navigation_addpg"
+        android:name="com.example.floorboardcalculator.ui.setting.SettingFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_settingpage" />
+
+</navigation>

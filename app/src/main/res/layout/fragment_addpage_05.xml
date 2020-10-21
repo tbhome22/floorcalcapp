@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:id="@+id/add_errorMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_error" />
+
+                <TextView
+                    android:paddingLeft="10dp"
+                    android:textColor="#ff0000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Please complete fill in required information!"
+                    android:layout_gravity="center_vertical"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/add_confirmInformation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:shrinkColumns="1"
+                    android:stretchColumns="1">
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border">
+                        <TextView
+                            android:text="Customer Name"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:padding="4dp" />
+
+                        <TextView
+                            android:id="@+id/add_detail_custName"
+                            android:text="@string/loading"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:textStyle="bold"
+                            android:padding="4dp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border">
+                        <TextView
+                            android:text="Contact No"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:padding="4dp" />
+
+                        <TextView
+                            android:id="@+id/add_detail_contactNo"
+                            android:text="@string/loading"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:textStyle="bold"
+                            android:padding="4dp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border">
+                        <TextView
+                            android:text="Referral"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:padding="4dp" />
+
+                        <TextView
+                            android:id="@+id/add_detail_referral"
+                            android:text="@string/loading"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:textStyle="bold"
+                            android:padding="4dp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border">
+                        <TextView
+                            android:text="Building Type"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:padding="4dp" />
+
+                        <TextView
+                            android:id="@+id/add_detail_buildType"
+                            android:text="@string/loading"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:textStyle="bold"
+                            android:padding="4dp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border">
+                        <TextView
+                            android:text="Full Address"
+                            android:layout_height="fill_parent"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:padding="4dp" />
+
+                        <TextView
+                            android:id="@+id/add_detail_fullAddr"
+                            android:text="@string/loading"
+                            android:textSize="13dp"
+                            android:maxLines="5"
+                            android:background="@drawable/border"
+                            android:textStyle="bold"
+                            android:padding="4dp"/>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border">
+                        <TextView
+                            android:text="City"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:padding="4dp" />
+
+                        <TextView
+                            android:id="@+id/add_detail_city"
+                            android:text="@string/loading"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:textStyle="bold"
+                            android:padding="4dp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border">
+                        <TextView
+                            android:text="Postal Code"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:padding="4dp" />
+
+                        <TextView
+                            android:id="@+id/add_detail_postalCode"
+                            android:text="@string/loading"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:textStyle="bold"
+                            android:padding="4dp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border">
+                        <TextView
+                            android:text="State"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:padding="4dp" />
+
+                        <TextView
+                            android:id="@+id/add_detail_state"
+                            android:text="@string/loading"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:textStyle="bold"
+                            android:padding="4dp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border">
+                        <TextView
+                            android:text="Location Coordinate"
+                            android:textSize="13dp"
+                            android:layout_height="fill_parent"
+                            android:background="@drawable/border"
+                            android:padding="4dp" />
+
+                        <TextView
+                            android:id="@+id/add_detail_mapPin"
+                            android:text="@string/loading"
+                            android:textSize="13dp"
+                            android:maxLines="2"
+                            android:background="@drawable/border"
+                            android:textStyle="bold"
+                            android:padding="4dp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border">
+                        <TextView
+                            android:text="Total Floor Input"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:padding="4dp" />
+
+                        <TextView
+                            android:id="@+id/add_detail_totalAreaInput"
+                            android:text="@string/loading"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:textStyle="bold"
+                            android:padding="4dp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border">
+                        <TextView
+                            android:text="Total Floor Area"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:padding="4dp" />
+
+                        <TextView
+                            android:id="@+id/add_detail_totalArea"
+                            android:text="@string/loading"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:textStyle="bold"
+                            android:padding="4dp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border">
+                        <TextView
+                            android:text="Skirting Length"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:padding="4dp" />
+
+                        <TextView
+                            android:id="@+id/add_detail_skirtLen"
+                            android:text="@string/loading"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:textStyle="bold"
+                            android:padding="4dp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border">
+                        <TextView
+                            android:text="Curved Area"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:padding="4dp" />
+
+                        <TextView
+                            android:id="@+id/add_detail_curvedArea"
+                            android:text="@string/loading"
+                            android:textSize="13dp"
+                            android:background="@drawable/border"
+                            android:textStyle="bold"
+                            android:padding="4dp" />
+                    </TableRow>
+
+                </TableLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#ff0000"
+                        android:textStyle="bold"
+                        android:textSize="12dp"
+                        android:text="Notes:"/>
+
+                    <TextView
+                        android:id="@+id/notice_check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#ff0000"
+                        android:textSize="12dp" />
+
+                </LinearLayout>
+
+                <CheckBox
+                    android:id="@+id/add_checkConfirm"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_confirm_check"
+                    android:textSize="12dp"/>
+
+                <Button
+                    android:id="@+id/btn_submitData"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add new Customer"
+                    android:drawableStart="@drawable/ic_upload"
+                    android:drawablePadding="10dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
