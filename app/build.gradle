@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+def gitTag = 'git describe --tags --abbrev=0'.execute([], project.rootDir).text
+def gitCommitCount = Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.1"
@@ -8,8 +11,8 @@ android {
         applicationId "com.example.floorboardcalculator"
         minSdkVersion 26
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode gitCommitCount
+        versionName gitTag
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
