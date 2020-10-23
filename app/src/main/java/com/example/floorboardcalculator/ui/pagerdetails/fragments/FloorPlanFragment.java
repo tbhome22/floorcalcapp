@@ -27,6 +27,7 @@ import com.example.floorboardcalculator.core.datamodel.Config;
 import com.example.floorboardcalculator.core.datamodel.Customer;
 import com.example.floorboardcalculator.core.datamodel.FloorPlan;
 import com.example.floorboardcalculator.core.datamodel.FloorType;
+import com.example.floorboardcalculator.ui.addon.DialogDismiss;
 import com.example.floorboardcalculator.ui.addon.LoadingBox;
 import com.google.android.gms.tasks.Task;
 import com.mongodb.BasicDBObject;
@@ -422,7 +423,9 @@ public class FloorPlanFragment extends Fragment implements Callable, DeleteOnCli
 
             dataProcess.notifyRefresh();
             ScheduledExecutorService svc = Executors.newScheduledThreadPool(1);
-            Runnable r = new AlertDismiss(load, svc);
+            List<Object> dismissObj = new ArrayList<>();
+            dismissObj.add(load);
+            Runnable r = new DialogDismiss(svc, dismissObj);
 
             svc.schedule(r, 3, TimeUnit.SECONDS);
         });
@@ -474,7 +477,9 @@ public class FloorPlanFragment extends Fragment implements Callable, DeleteOnCli
 
             dataProcess.notifyRefresh();
             ScheduledExecutorService svc = Executors.newScheduledThreadPool(1);
-            Runnable r = new AlertDismiss(load, svc);
+            List<Object> dismissObj = new ArrayList<>();
+            dismissObj.add(load);
+            Runnable r = new DialogDismiss(svc, dismissObj);
 
             svc.schedule(r, 3, TimeUnit.SECONDS);
         });
@@ -498,22 +503,6 @@ public class FloorPlanFragment extends Fragment implements Callable, DeleteOnCli
     @Override
     public void onFailedReach() {
         Toast.makeText(getContext(), "Failed to retrieve configuration!", Toast.LENGTH_SHORT).show();
-    }
-
-    private static class AlertDismiss implements Runnable {
-        private AlertDialog dialog;
-        private ScheduledExecutorService svc;
-
-        public AlertDismiss(AlertDialog dialog, ScheduledExecutorService svc) {
-            this.dialog = dialog;
-            this.svc = svc;
-        }
-
-        @Override
-        public void run(){
-            dialog.dismiss();
-            svc.shutdown();
-        }
     }
 
     private void checkValid(String name, String len, String wid) {

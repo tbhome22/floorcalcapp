@@ -15,6 +15,7 @@ import com.example.floorboardcalculator.ui.pagerdetails.fragments.CustomerFragme
 import com.example.floorboardcalculator.ui.pagerdetails.fragments.FloorPlanFragment;
 import com.example.floorboardcalculator.ui.pagerdetails.fragments.InformationProcess;
 import com.example.floorboardcalculator.ui.pagerdetails.fragments.LocationFragment;
+import com.example.floorboardcalculator.ui.pagerdetails.fragments.NotesFragment;
 import com.example.floorboardcalculator.ui.pagerdetails.fragments.PagerListener;
 import com.example.floorboardcalculator.ui.pagerdetails.fragments.PriceFragment;
 
@@ -137,22 +138,27 @@ public class InformationAdapter extends FragmentStateAdapter implements Informat
         CustomerFragment customerFrag = new CustomerFragment();
         LocationFragment locationFrag = new LocationFragment();
         FloorPlanFragment planFrag = new FloorPlanFragment();
+        NotesFragment notesFrag = new NotesFragment();
 
         fragments.add(customerFrag);
         fragments.add(locationFrag);
         fragments.add(planFrag);
+        fragments.add(notesFrag);
 
         fragmentTitle.add("Customer Info");
         fragmentTitle.add("Location Info");
         fragmentTitle.add("Floor Plan");
+        fragmentTitle.add("Notes");
 
         customerFrag.setDataProcess(this);
         locationFrag.setDataProcess(this);
         planFrag.setDataProcess(this);
+        notesFrag.setDataProcess(this);
 
         setDataListener(customerFrag);
         setDataListener(locationFrag);
         setDataListener(planFrag);
+        setDataListener(notesFrag);
 
         setConfigListener(planFrag);
 

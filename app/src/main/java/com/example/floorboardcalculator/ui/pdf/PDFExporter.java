@@ -184,7 +184,7 @@ public class PDFExporter implements Serializable {
 
             custInf.addCell(new Cell(1,12).setTextAlignment(TextAlignment.LEFT).add(secTableTitle).setBorder(new DottedBorder(2f)));
 
-            Cell[] secTb = new Cell[14];
+            Cell[] secTb = new Cell[16];
 
             Text c1_1 = new Text("Customer Name: "), c1_2 = new Text(customer.getCustName()).setBold();
             secTb[0] = new Cell(1, 2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c1_1));
@@ -213,6 +213,10 @@ public class PDFExporter implements Serializable {
             Text c7_1 = new Text("State: "), c7_2 = new Text(StateList.getState(customer.getState())).setBold();
             secTb[12] = new Cell(1, 2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c7_1));
             secTb[13] = new Cell(1, 4).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c7_2));
+
+            Text c8_1 = new Text("Notes: "), c8_2 = new Text((customer.getNotes().length() > 0) ? customer.getNotes() : "No notes.").setBold();
+            secTb[14] = new Cell(1, 2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c8_1)).setPaddingBottom(10f);
+            secTb[15] = new Cell(1, 10).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c8_2)).setPaddingBottom(10f);
 
             for(Cell i : secTb) {
                 i.setBorder(new DottedBorder(2f));
@@ -442,7 +446,7 @@ public class PDFExporter implements Serializable {
 
         try{
             MultiFormatWriter writer = new MultiFormatWriter();
-            BitMatrix matrix = writer.encode(recordId, BarcodeFormat.QR_CODE, 100, 100);
+            BitMatrix matrix = writer.encode("FLOORQR=" + recordId, BarcodeFormat.QR_CODE, 100, 100);
             BarcodeEncoder encoder = new BarcodeEncoder();
 
             return encoder.createBitmap(matrix);

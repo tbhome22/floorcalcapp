@@ -42,12 +42,14 @@
     <string name="step_03">Step 3</string>
     <string name="step_04">Step 4</string>
     <string name="step_05">Step 5</string>
+    <string name="step_06">Step 6</string>
 
     <string name="step_title_01">Customer Information</string>
     <string name="step_title_02">Building Information</string>
     <string name="step_title_03">Floor Information</string>
     <string name="step_title_04">Floor Plan</string>
-    <string name="step_title_05">Confirmation</string>
+    <string name="step_title_05">Notes</string>
+    <string name="step_title_06">Confirmation</string>
     
     <string-array name="si_metric">
         <item>Auto</item>

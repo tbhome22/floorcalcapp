@@ -70,6 +70,10 @@ public class StepDynamicFragment extends WizardDataParser {
             case R.layout.fragment_addpage_05:
                 info = new Confirmation(selectedResource, position);
                 break;
+
+            case R.layout.fragment_addpage_06:
+                info = new NotesRecord(selectedResource, position);
+                break;
         }
 
         info.activity = getActivity();

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/add_notes"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:inputType="textMultiLine"
+                android:textAlignment="viewStart"
+                android:maxLength="500"
+                android:hint="Customer Notes Here (Optional)" />
+
+            <TextView
+                android:id="@+id/add_charsLeft"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="textEnd"
+                android:textStyle="bold"
+                android:text="500 / 500 characters left"/>
+
+    </LinearLayout>
+
+</ScrollView>

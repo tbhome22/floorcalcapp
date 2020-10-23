@@ -101,7 +101,7 @@ public class WizardPageAdapter extends FragmentStateAdapter implements IWizardLi
 
     private void initResult() {
         for(WizardViewModel model : WizardViewModel.values()) {
-            if(model.getLayoutResId() != R.layout.fragment_addpage_05){
+            if(model.getLayoutResId() != R.layout.fragment_addpage_05 && model.getLayoutResId() != R.layout.fragment_addpage_06 ){
                 LayoutStateController controller = new LayoutStateController();
                 controller.layoutId = model.getLayoutResId();
                 controller.valid = false;

@@ -254,6 +254,8 @@ public class ListDataFragment extends Fragment implements ListOnClickListener, L
     }
 
     private void CodeCheck(@NonNull String scanned) {
+        Log.d("QrScan", "Scanned Data: " + scanned);
+
         mLoaderBox = new LoadingBox(getContext());
         AlertDialog dialog = mLoaderBox.show();
         ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
@@ -261,51 +263,58 @@ public class ListDataFragment extends Fragment implements ListOnClickListener, L
         dataDismiss.add(dialog);
         Runnable runnable = new DialogDismiss(service, dataDismiss);
 
-        if(ObjectId.isValid(scanned)) {
-            mLoaderBox.setLoadingType(LoadingBox.MessageType.IN_PROGRESS);
-            mLoaderBox.setMessage("Finding Customer.");
+        if(scanned.contains("FLOORQR=")) {
+            String qid = scanned.substring(8);
 
-            ObjectId scannedId = new ObjectId(scanned);
+            if (ObjectId.isValid(qid)) {
+                mLoaderBox.setLoadingType(LoadingBox.MessageType.IN_PROGRESS);
+                mLoaderBox.setMessage("Finding Customer.");
 
-            CodecRegistry codecRegistry = CodecRegistries.fromRegistries(
-                    MongoClientSettings.getDefaultCodecRegistry(),
-                    CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build())
-            );
-            RemoteMongoClient client = Stitch.getDefaultAppClient().getServiceClient(RemoteMongoClient.factory, getString(R.string.db_service));
-            RemoteMongoCollection<Customer> collection = client.getDatabase(getString(R.string.db_main)).getCollection("Customer", Customer.class).withCodecRegistry(codecRegistry);
+                ObjectId scannedId = new ObjectId(qid);
 
-            final Task<Long> query = collection.count(new Document().append("_id", scannedId));
+                CodecRegistry codecRegistry = CodecRegistries.fromRegistries(
+                        MongoClientSettings.getDefaultCodecRegistry(),
+                        CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build())
+                );
+                RemoteMongoClient client = Stitch.getDefaultAppClient().getServiceClient(RemoteMongoClient.factory, getString(R.string.db_service));
+                RemoteMongoCollection<Customer> collection = client.getDatabase(getString(R.string.db_main)).getCollection("Customer", Customer.class).withCodecRegistry(codecRegistry);
 
-            query.addOnCompleteListener((@NonNull Task<Long> task) -> {
-                if(task.isSuccessful()) {
-                    Long rowCount = task.getResult();
-                    int convert = rowCount.intValue();
+                final Task<Long> query = collection.count(new Document().append("_id", scannedId));
 
-                    if(convert > 0) {
-                        getActivity().runOnUiThread(() -> {
-                            Intent i = new Intent(getContext(), CustomerInformationActivity.class);
-                            i.putExtra("data_id", scannedId);
-                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                query.addOnCompleteListener((@NonNull Task<Long> task) -> {
+                    if (task.isSuccessful()) {
+                        Long rowCount = task.getResult();
+                        int convert = rowCount.intValue();
 
-                            startActivity(i);
+                        if (convert > 0) {
+                            getActivity().runOnUiThread(() -> {
+                                Intent i = new Intent(getContext(), CustomerInformationActivity.class);
+                                i.putExtra("data_id", scannedId);
+                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                            service.schedule(runnable, 300, TimeUnit.MILLISECONDS);
-                        });
-                    }
-                    else {
+                                startActivity(i);
+
+                                service.schedule(runnable, 300, TimeUnit.MILLISECONDS);
+                            });
+                        } else {
+                            mLoaderBox.setLoadingType(LoadingBox.MessageType.FAILED);
+                            mLoaderBox.setMessage("Customer Not Found!");
+
+                            service.schedule(runnable, 3, TimeUnit.SECONDS);
+                        }
+                    } else {
                         mLoaderBox.setLoadingType(LoadingBox.MessageType.FAILED);
-                        mLoaderBox.setMessage("Customer Not Found!");
+                        mLoaderBox.setMessage("Server Error!");
 
                         service.schedule(runnable, 3, TimeUnit.SECONDS);
                     }
-                }
-                else {
-                    mLoaderBox.setLoadingType(LoadingBox.MessageType.FAILED);
-                    mLoaderBox.setMessage("Server Error!");
+                });
+            } else {
+                mLoaderBox.setLoadingType(LoadingBox.MessageType.FAILED);
+                mLoaderBox.setMessage("Invalid QR Code!");
 
-                    service.schedule(runnable, 3, TimeUnit.SECONDS);
-                }
-            });
+                service.schedule(runnable, 3, TimeUnit.SECONDS);
+            }
         }
         else {
             mLoaderBox.setLoadingType(LoadingBox.MessageType.FAILED);

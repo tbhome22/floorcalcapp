@@ -211,6 +211,7 @@ public class Confirmation extends StepDynamicFragment {
                     .append("Lat", customer.getLat())
                     .append("Lng", customer.getLng())
                     .append("Exported", false)
+                    .append("Notes", customer.getNotes())
                     .append("FloorPlan", data)
                     .append("FloorInf", obj2);
 

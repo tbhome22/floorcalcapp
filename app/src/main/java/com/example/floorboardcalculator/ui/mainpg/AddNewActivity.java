@@ -85,8 +85,8 @@ public class AddNewActivity extends AppCompatActivity implements IWizardListener
                 break;
 
             case R.layout.fragment_addpage_05:
-                tabLayout.getTabAt(4).setIcon(isValid? R.drawable.ic_add_success : R.drawable.ic_block_red);
-                tabLayout.getTabAt(4).getIcon().setColorFilter(isValid? Color.GREEN : Color.RED, PorterDuff.Mode.SRC_IN);
+                tabLayout.getTabAt(5).setIcon(isValid? R.drawable.ic_add_success : R.drawable.ic_block_red);
+                tabLayout.getTabAt(5).getIcon().setColorFilter(isValid? Color.GREEN : Color.RED, PorterDuff.Mode.SRC_IN);
                 break;
         }
     }
