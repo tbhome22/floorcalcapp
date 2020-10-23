@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.floorboardcalculator.R;
 import com.example.floorboardcalculator.core.datamodel.Customer;
+import com.example.floorboardcalculator.ui.addon.DialogDismiss;
 import com.example.floorboardcalculator.ui.addon.LoadingBox;
 import com.google.android.gms.tasks.Task;
 import com.mongodb.stitch.android.core.Stitch;
@@ -25,6 +26,7 @@ import org.bson.types.ObjectId;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -111,6 +113,10 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ListDa
             case 5:
                 holder.mBuildingType.setText(R.string.build_type_05);
                 break;
+
+            case 6:
+                holder.mBuildingType.setText(R.string.build_type_06);
+                break;
         }
 
         holder.mDeleteButton.setOnClickListener(view -> {
@@ -168,9 +174,11 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ListDa
             if(dataListener != null) dataListener.dataDeleted();
 
             ScheduledExecutorService svc = Executors.newScheduledThreadPool(1);
-            Runnable r = new AlertDismiss(dialog, svc);
+            List<Object> dialogDismiss = new ArrayList<>();
+            dialogDismiss.add(dialog);
+            Runnable r = new DialogDismiss(svc, dialogDismiss);
 
-            svc.schedule(r, 3, TimeUnit.SECONDS);
+            svc.schedule(r, 2, TimeUnit.SECONDS);
         });
     }
 
@@ -186,21 +194,5 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ListDa
 
     public List<Customer> getDataset() {
         return dataset;
-    }
-
-    private class AlertDismiss implements Runnable {
-        private AlertDialog dialog;
-        private ScheduledExecutorService svc;
-
-        public AlertDismiss(AlertDialog dialog, ScheduledExecutorService svc) {
-            this.dialog = dialog;
-            this.svc = svc;
-        }
-
-        @Override
-        public void run(){
-            dialog.dismiss();
-            svc.shutdown();
-        }
     }
 }

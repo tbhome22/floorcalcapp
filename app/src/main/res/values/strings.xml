@@ -5,6 +5,7 @@
     <string name="title_home">Dashboard</string>
     <string name="title_dashboard">Record List</string>
     <string name="title_addcustomer">Add New Customer</string>
+    <string name="title_qr">QR ID Scan</string>
     <string name="title_rate">Rate</string>
     <string name="title_notifications">Settings</string>
     <string name="db_name">floorareacalc-xvnjr</string>
@@ -86,5 +87,7 @@
     </string>
 
     <string name="add_confirm_check">I hereby agree that the information provided is true.</string>
+    <string name="search_hint">Customer Name (Press Enter to submit)</string>
+    <string name="qr_scan_notice">Please position camera to QR code on checklist.</string>
 
 </resources>

@@ -72,9 +72,9 @@ public class SettingFragment extends Fragment {
         initSettings();
         initConnection();
 
-        mDoubles.setOnCheckedChangeListener((c, b) -> doublesCheckedChangeResponse(c,b));
-        mPriceExports.setOnCheckedChangeListener((c, b) -> priceExpCheckedChangeResponse(c, b));
-        mUnits.setOnCheckedChangeListener((c, b) -> unitCheckedChangeResponse(c, b));
+        mDoubles.setOnCheckedChangeListener(this::doublesCheckedChangeResponse);
+        mPriceExports.setOnCheckedChangeListener(this::priceExpCheckedChangeResponse);
+        mUnits.setOnCheckedChangeListener(this::unitCheckedChangeResponse);
         mSiSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

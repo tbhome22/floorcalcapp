@@ -15,14 +15,62 @@
         android:layout_marginBottom="60dp"
         android:orientation="vertical" >
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#d6d6d6"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <ImageView
+                android:id="@+id/list_searchIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_search"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"/>
+
+            <EditText
+                android:id="@+id/list_searchTxt"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/list_qrScan"
+                android:layout_toEndOf="@id/list_searchIcon"
+                android:hint="@string/search_hint"
+                android:maxLength="30"
+                android:textSize="7pt"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLines="1"/>
+
+            <ImageButton
+                android:id="@+id/list_qrScan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_qrscan"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="#f0f0f0"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Press a list to view customer information."
+            android:textAlignment="center"
+            android:textSize="5pt"
+            android:padding="4dp"
+            android:textStyle="italic|bold"/>
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/list_item_slider"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:id="@+id/list_item_recycler"
                 tools:layout_editor_absoluteX="1dp"
                 tools:layout_editor_absoluteY="1dp"

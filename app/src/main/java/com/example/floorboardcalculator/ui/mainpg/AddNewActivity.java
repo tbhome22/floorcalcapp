@@ -3,8 +3,6 @@ package com.example.floorboardcalculator.ui.mainpg;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
@@ -18,6 +16,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 public class AddNewActivity extends AppCompatActivity implements IWizardListener {
+    private static final String TAG = AddNewActivity.class.getSimpleName();
     private ViewPager2 pager;
     private TabLayout tabLayout;
     private TextView mPageTitle;

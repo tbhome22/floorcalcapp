@@ -29,6 +29,7 @@ import com.example.floorboardcalculator.R;
 import com.example.floorboardcalculator.core.config.PreferenceItem;
 import com.example.floorboardcalculator.core.datamodel.Config;
 import com.example.floorboardcalculator.core.datamodel.FloorType;
+import com.example.floorboardcalculator.ui.addon.DialogDismiss;
 import com.example.floorboardcalculator.ui.addon.LoadingBox;
 import com.example.floorboardcalculator.ui.addon.OnDialogResultListener;
 import com.example.floorboardcalculator.ui.addon.RateDialog;
@@ -538,7 +539,10 @@ public class RateFragment extends Fragment implements ListOnClickListener, OnDia
             }
 
             ScheduledExecutorService svc = Executors.newScheduledThreadPool(1);
-            Runnable r = new RateFragment.AlertDismiss(load, svc);
+            inProcess = false;
+            List<Object> dialogDismiss = new ArrayList<>();
+            dialogDismiss.add(load);
+            Runnable r = new DialogDismiss(svc, dialogDismiss);
 
             svc.schedule(r, 3, TimeUnit.SECONDS);
         });
@@ -637,9 +641,12 @@ public class RateFragment extends Fragment implements ListOnClickListener, OnDia
                     }
 
                     ScheduledExecutorService svc = Executors.newScheduledThreadPool(1);
-                    Runnable r = new RateFragment.AlertDismiss(load, svc);
+                    inProcess = false;
+                    List<Object> dialogDismiss = new ArrayList<>();
+                    dialogDismiss.add(load);
+                    Runnable r = new DialogDismiss(svc, dialogDismiss);
 
-                    svc.schedule(r, 3, TimeUnit.SECONDS);
+                    svc.schedule(r, 2, TimeUnit.SECONDS);
                     refreshPerform();
                 });
             }
@@ -705,9 +712,12 @@ public class RateFragment extends Fragment implements ListOnClickListener, OnDia
                     }
 
                     ScheduledExecutorService svc = Executors.newScheduledThreadPool(1);
-                    Runnable r = new RateFragment.AlertDismiss(load, svc);
+                    inProcess = false;
+                    List<Object> dialogDismiss = new ArrayList<>();
+                    dialogDismiss.add(load);
+                    Runnable r = new DialogDismiss(svc, dialogDismiss);
 
-                    svc.schedule(r, 3, TimeUnit.SECONDS);
+                    svc.schedule(r, 2, TimeUnit.SECONDS);
                     refreshPerform();
                 });
             }
@@ -736,7 +746,7 @@ public class RateFragment extends Fragment implements ListOnClickListener, OnDia
         rateDialog = dialog.show();
     }
 
-    private void deleteCurrentRate(View v) {
+    private void deleteCurrentRate(@NotNull View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Remove record?");
 
@@ -786,23 +796,6 @@ public class RateFragment extends Fragment implements ListOnClickListener, OnDia
 
     public boolean allowBackPressed() {
         return !swipeRefreshLayout.isRefreshing() || !inProcess;
-    }
-
-    private class AlertDismiss implements Runnable {
-        private AlertDialog dialog;
-        private ScheduledExecutorService svc;
-
-        public AlertDismiss(AlertDialog dialog, ScheduledExecutorService svc) {
-            this.dialog = dialog;
-            this.svc = svc;
-        }
-
-        @Override
-        public void run(){
-            dialog.dismiss();
-            svc.shutdown();
-            inProcess = false;
-        }
     }
 
     private enum SliderPosition {

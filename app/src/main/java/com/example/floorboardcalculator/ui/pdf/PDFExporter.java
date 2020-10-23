@@ -2,10 +2,12 @@ package com.example.floorboardcalculator.ui.pdf;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.example.floorboardcalculator.core.config.PreferenceItem;
 import com.example.floorboardcalculator.core.constant.BuildingType;
@@ -14,6 +16,10 @@ import com.example.floorboardcalculator.core.datamodel.Config;
 import com.example.floorboardcalculator.core.datamodel.Customer;
 import com.example.floorboardcalculator.core.datamodel.FloorPlan;
 import com.example.floorboardcalculator.core.datamodel.FloorType;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -22,17 +28,21 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.borders.DottedBorder;
 import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.element.Text;
+import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import com.itextpdf.kernel.events.PdfDocumentEvent;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.NumberFormat;
@@ -72,7 +82,7 @@ public class PDFExporter implements Serializable {
 
     public void generate() {
         try{
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
 
             String fileName = "CustomerPlan_" + customer.get_id().toHexString();
 
@@ -109,26 +119,57 @@ public class PDFExporter implements Serializable {
             formInf.setBorder(Border.NO_BORDER);
             formInf.setMarginTop(10.5f);
 
-            Cell[] firstTb = new Cell[8];
+            Bitmap bmp = QrGenerator();
+            Cell[] firstTb;
 
-            Text e1_1 = new Text("Record ID: "), e1_2 = new Text(customer.get_id().toHexString()).setBold();
-            firstTb[0] = new Cell(1, 2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e1_1));
-            firstTb[1] = new Cell(1, 6).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e1_2));
+            if(bmp != null) {
+                firstTb= new Cell[9];
 
-            Text e2_1 = new Text("Print Date: "), e2_2 = new Text(dateFormat.format(new Date())).setBold();
-            firstTb[2] = new Cell(1,2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e2_1));
-            firstTb[3] = new Cell(1,2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e2_2));
+                Text e1_1 = new Text("Record ID: "), e1_2 = new Text(customer.get_id().toHexString()).setBold();
+                firstTb[0] = new Cell(1, 2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e1_1));
+                firstTb[1] = new Cell(1, 6).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e1_2));
 
-            Text e3_1 = new Text("Referral: "), e3_2 = new Text(customer.getReferral().equals("-")?"No Referral":customer.getReferral()).setBold();
-            firstTb[4] = new Cell(1, 2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e3_1));
-            firstTb[5] = new Cell(1, 6).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e3_2));
+                Image qr_img = new Image(ImageDataFactory.create(bmpCompressor(bmp)));
+                qr_img.setHorizontalAlignment(HorizontalAlignment.RIGHT);
+                qr_img.setMarginTop(-2.0f);
+                firstTb[2] = new Cell(4, 4).add(qr_img);
 
-            Text e4_1 = new Text("Create Date: "), e4_2 = new Text(dateFormat.format(customer.getAddDate())).setBold();
-            firstTb[6] = new Cell(1,2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e4_1));
-            firstTb[7] = new Cell(1,2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e4_2));
+                Text e2_1 = new Text("Print Date: "), e2_2 = new Text(dateFormat.format(new Date())).setBold();
+                firstTb[3] = new Cell(1,2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e2_1));
+                firstTb[4] = new Cell(1,6).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e2_2));
+
+                Text e4_1 = new Text("Create Date: "), e4_2 = new Text(dateFormat.format(customer.getAddDate())).setBold();
+                firstTb[5] = new Cell(1,2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e4_1));
+                firstTb[6] = new Cell(1,6).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e4_2));
+
+                Text e3_1 = new Text("Referral: "), e3_2 = new Text(customer.getReferral().equals("-")?"No Referral":customer.getReferral()).setBold();
+                firstTb[7] = new Cell(1, 2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e3_1));
+                firstTb[8] = new Cell(1, 6).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e3_2));
+
+            }
+            else {
+                firstTb = new Cell[8];
+
+                Text e1_1 = new Text("Record ID: "), e1_2 = new Text(customer.get_id().toHexString()).setBold();
+                firstTb[0] = new Cell(1, 2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e1_1));
+                firstTb[1] = new Cell(1, 6).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e1_2));
+
+                Text e2_1 = new Text("Print Date: "), e2_2 = new Text(dateFormat.format(new Date())).setBold();
+                firstTb[2] = new Cell(1,2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e2_1));
+                firstTb[3] = new Cell(1,2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e2_2));
+
+                Text e3_1 = new Text("Referral: "), e3_2 = new Text(customer.getReferral().equals("-")?"No Referral":customer.getReferral()).setBold();
+                firstTb[4] = new Cell(1, 2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e3_1));
+                firstTb[5] = new Cell(1, 6).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e3_2));
+
+                Text e4_1 = new Text("Create Date: "), e4_2 = new Text(dateFormat.format(customer.getAddDate())).setBold();
+                firstTb[6] = new Cell(1,2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e4_1));
+                firstTb[7] = new Cell(1,2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(e4_2));
+            }
 
             for(Cell i : firstTb) {
                 i.setBorder(Border.NO_BORDER);
+                i.setFontSize(10.5f);
                 formInf.addCell(i);
             }
 
@@ -279,7 +320,7 @@ public class PDFExporter implements Serializable {
             thdTb[6] = new Cell(1, 3).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(d4_1));
             thdTb[7] = new Cell(1, 3).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(d4_2));
 
-            Text d5_1 = new Text("Total Calculated Area: ");
+            Text d5_1 = new Text("Total Calculated Area (Chargeable Area): ");
             thdTb[8] = new Cell(1, 6).setTextAlignment(TextAlignment.RIGHT).add(new Paragraph().add(d5_1));
             thdTb[9] = new Cell(1, 6).setTextAlignment(TextAlignment.LEFT).add(d5_2);
 
@@ -321,11 +362,11 @@ public class PDFExporter implements Serializable {
                 }
             }
 
-            planTb.addCell(new Cell(1,1).setTextAlignment(TextAlignment.CENTER).add(new Paragraph("No")).setBorder(new DottedBorder(2f)));
-            planTb.addCell(new Cell(1,6).setTextAlignment(TextAlignment.LEFT).add(new Paragraph("Area Name")).setBorder(new DottedBorder(2f)));
-            planTb.addCell(new Cell(1,3).setTextAlignment(TextAlignment.CENTER).add(ttl1).setBorder(new DottedBorder(2f)));
-            planTb.addCell(new Cell(1,3).setTextAlignment(TextAlignment.CENTER).add(ttl2).setBorder(new DottedBorder(2f)));
-            planTb.addCell(new Cell(1,3).setTextAlignment(TextAlignment.CENTER).add(ttl3).setBorder(new DottedBorder(2f)));
+            planTb.addCell(new Cell(1,1).setTextAlignment(TextAlignment.CENTER).add(new Paragraph("No")).setFontSize(10f).setBorder(new DottedBorder(2f)));
+            planTb.addCell(new Cell(1,6).setTextAlignment(TextAlignment.LEFT).add(new Paragraph("Area Name")).setFontSize(10f).setBorder(new DottedBorder(2f)));
+            planTb.addCell(new Cell(1,3).setTextAlignment(TextAlignment.CENTER).add(ttl1).setFontSize(10f).setBorder(new DottedBorder(2f)));
+            planTb.addCell(new Cell(1,3).setTextAlignment(TextAlignment.CENTER).add(ttl2).setFontSize(10f).setBorder(new DottedBorder(2f)));
+            planTb.addCell(new Cell(1,3).setTextAlignment(TextAlignment.CENTER).add(ttl3).setFontSize(10f).setBorder(new DottedBorder(2f)));
 
             for(int i=0; i<customer.getFloorPlan().size(); i++) {
                 FloorPlan plan = customer.getFloorPlan().get(i);
@@ -388,6 +429,29 @@ public class PDFExporter implements Serializable {
         }
     }
 
+    private byte @NotNull [] bmpCompressor(@NotNull Bitmap bmp) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+
+        return outputStream.toByteArray();
+    }
+
+    @Nullable
+    private Bitmap QrGenerator() {
+        String recordId = customer.get_id().toHexString();
+
+        try{
+            MultiFormatWriter writer = new MultiFormatWriter();
+            BitMatrix matrix = writer.encode(recordId, BarcodeFormat.QR_CODE, 100, 100);
+            BarcodeEncoder encoder = new BarcodeEncoder();
+
+            return encoder.createBitmap(matrix);
+        }
+        catch(Exception e) {
+            return null;
+        }
+    }
+
     @NotNull
     private Table WritePricingSpace() throws IOException {
         float range1dist = (float)Double.parseDouble(rateConfig.data1) / 929f;
@@ -431,11 +495,11 @@ public class PDFExporter implements Serializable {
             header2 = new Paragraph("Quantity (ft").add(superSquare()).add(")");
         }
 
-        priceTb.addCell(new Cell(1,1).setTextAlignment(TextAlignment.CENTER).add(new Paragraph("No")).setBorder(new DottedBorder(2f)));
-        priceTb.addCell(new Cell(1,6).setTextAlignment(TextAlignment.LEFT).add(new Paragraph("Product")).setBorder(new DottedBorder(2f)));
-        priceTb.addCell(new Cell(1,3).setTextAlignment(TextAlignment.CENTER).add(header1).setBorder(new DottedBorder(2f)));
-        priceTb.addCell(new Cell(1,3).setTextAlignment(TextAlignment.CENTER).add(header2).setBorder(new DottedBorder(2f)));
-        priceTb.addCell(new Cell(1,3).setTextAlignment(TextAlignment.CENTER).add(new Paragraph("Total Amount")).setBorder(new DottedBorder(2f)));
+        priceTb.addCell(new Cell(1,1).setTextAlignment(TextAlignment.CENTER).add(new Paragraph("No")).setFontSize(10f).setBorder(new DottedBorder(2f)));
+        priceTb.addCell(new Cell(1,6).setTextAlignment(TextAlignment.LEFT).add(new Paragraph("Product")).setFontSize(10f).setBorder(new DottedBorder(2f)));
+        priceTb.addCell(new Cell(1,3).setTextAlignment(TextAlignment.CENTER).add(header1).setFontSize(10f).setBorder(new DottedBorder(2f)));
+        priceTb.addCell(new Cell(1,3).setTextAlignment(TextAlignment.CENTER).add(header2).setFontSize(10f).setBorder(new DottedBorder(2f)));
+        priceTb.addCell(new Cell(1,3).setTextAlignment(TextAlignment.CENTER).add(new Paragraph("Total Amount")).setFontSize(10f).setBorder(new DottedBorder(2f)));
 
         int nums = 0;
         int totalCeilArea = (int) Math.ceil(totalArea);

@@ -19,6 +19,7 @@ public class Customer implements Serializable {
     public String Referral;
     public double Lat;
     public double Lng;
+    public boolean Exported;
     public ArrayList<FloorPlan> FloorPlan;
     public FloorInf FloorInf;
 
@@ -124,6 +125,14 @@ public class Customer implements Serializable {
 
     public void setContactNo(String contactNo) {
         ContactNo = contactNo;
+    }
+
+    public boolean isExported() {
+        return Exported;
+    }
+
+    public void setExported(boolean exported) {
+        Exported = exported;
     }
 
     public ArrayList<com.example.floorboardcalculator.core.datamodel.FloorPlan> getFloorPlan() {

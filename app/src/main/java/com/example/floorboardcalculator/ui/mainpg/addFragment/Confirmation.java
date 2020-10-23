@@ -17,6 +17,7 @@ import com.example.floorboardcalculator.core.constant.BuildingType;
 import com.example.floorboardcalculator.core.constant.StateList;
 import com.example.floorboardcalculator.core.datamodel.Customer;
 import com.example.floorboardcalculator.core.datamodel.FloorPlan;
+import com.example.floorboardcalculator.ui.addon.DialogDismiss;
 import com.example.floorboardcalculator.ui.addon.LoadingBox;
 import com.google.android.gms.tasks.Task;
 import com.mongodb.BasicDBObject;
@@ -209,6 +210,7 @@ public class Confirmation extends StepDynamicFragment {
                     .append("Referral", customer.getReferral())
                     .append("Lat", customer.getLat())
                     .append("Lng", customer.getLng())
+                    .append("Exported", false)
                     .append("FloorPlan", data)
                     .append("FloorInf", obj2);
 
@@ -225,9 +227,12 @@ public class Confirmation extends StepDynamicFragment {
                 }
 
                 ScheduledExecutorService svc = Executors.newScheduledThreadPool(1);
-                Runnable r = new DismissAlert(dialog, svc);
+                List<Object> dialogDismiss = new ArrayList<>();
+                dialogDismiss.add(dialog);
+                dialogDismiss.add(activity);
+                Runnable r = new DialogDismiss(svc, dialogDismiss);
 
-                svc.schedule(r, 3, TimeUnit.SECONDS);
+                svc.schedule(r, 2, TimeUnit.SECONDS);
             });
         }
         else {
@@ -235,26 +240,12 @@ public class Confirmation extends StepDynamicFragment {
             box.setLoadingType(LoadingBox.MessageType.FAILED);
 
             ScheduledExecutorService svc = Executors.newScheduledThreadPool(1);
-            Runnable r = new DismissAlert(dialog, svc);
+            List<Object> dialogDismiss = new ArrayList<>();
+            dialogDismiss.add(dialog);
+            dialogDismiss.add(activity);
+            Runnable r = new DialogDismiss(svc, dialogDismiss);
 
-            svc.schedule(r, 3, TimeUnit.SECONDS);
-        }
-    }
-
-    private class DismissAlert implements Runnable {
-        private AlertDialog dialog;
-        private ScheduledExecutorService svc;
-
-        public DismissAlert(AlertDialog dialog, ScheduledExecutorService svc) {
-            this.dialog = dialog;
-            this.svc = svc;
-        }
-
-        @Override
-        public void run(){
-            dialog.dismiss();
-            svc.shutdown();
-            activity.finish();
+            svc.schedule(r, 2, TimeUnit.SECONDS);
         }
     }
 }

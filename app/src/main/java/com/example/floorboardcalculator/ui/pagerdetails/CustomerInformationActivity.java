@@ -55,6 +55,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class CustomerInformationActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, PagerListener {
+    private static final String TAG = CustomerInformationActivity.class.getSimpleName();
     private static final String APP_PREF = "TWO_BROTHER_SETTING";
 
     private TabLayout mainTab;
@@ -137,6 +138,11 @@ public class CustomerInformationActivity extends AppCompatActivity implements Sw
         super.onStop();
 
         this.finish();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     private void onPrintClicked(View v) {
@@ -255,7 +261,7 @@ public class CustomerInformationActivity extends AppCompatActivity implements Sw
         ScheduledExecutorService svc = Executors.newSingleThreadScheduledExecutor();
         Runnable r = new AwaitProcess(svc);
 
-        svc.scheduleAtFixedRate(r, 0, 1, TimeUnit.SECONDS);
+        svc.scheduleAtFixedRate(r, 0, 500, TimeUnit.MILLISECONDS);
 
         CodecRegistry codecRegistry = CodecRegistries.fromRegistries(
                 MongoClientSettings.getDefaultCodecRegistry(),
@@ -314,8 +320,6 @@ public class CustomerInformationActivity extends AppCompatActivity implements Sw
             }
 
             inProcess1 = false;
-            refreshLayout.setRefreshing(false);
-            refreshLayout.setEnabled(false);
         });
     }
 
@@ -340,6 +344,8 @@ public class CustomerInformationActivity extends AppCompatActivity implements Sw
         public void run() {
             if(!inProcess1 && !inProcess2 && !inProcess3) {
                 runOnUiThread(() -> {
+                    refreshLayout.setRefreshing(false);
+                    refreshLayout.setEnabled(false);
                     btnBack.setEnabled(true);
                     btnPrint.setEnabled(true);
                 });
@@ -357,6 +363,14 @@ public class CustomerInformationActivity extends AppCompatActivity implements Sw
             PrintManager printManager = (PrintManager) getSystemService(Context.PRINT_SERVICE);
             String jobName = "checklist_" + format.format(new Date());
             printManager.print(jobName, new PrintProcessAdapter(CustomerInformationActivity.this, fileName), new PrintAttributes.Builder().build());
+
+            RemoteMongoClient client = Stitch.getDefaultAppClient().getServiceClient(RemoteMongoClient.factory, getString(R.string.db_service));
+            RemoteMongoCollection<Document> collection_customer = client.getDatabase(getString(R.string.db_main)).getCollection("Customer");
+
+            Document filter = new Document().append("_id", dataId);
+            Document updateDoc = new Document().append("$set", new Document().append("Exported", true));
+
+            collection_customer.updateOne(filter, updateDoc);
         }
     }
 }

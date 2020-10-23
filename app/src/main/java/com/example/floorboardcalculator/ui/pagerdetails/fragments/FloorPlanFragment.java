@@ -405,7 +405,7 @@ public class FloorPlanFragment extends Fragment implements Callable, DeleteOnCli
 
         Document finder = new Document().append("_id", this.data.get_id());
         Document updateCmd = new Document().append("$set",
-                new Document().append("FloorPlan", data));
+                new Document().append("FloorPlan", data).append("Exported", false));
 
         final Task<RemoteUpdateResult> tResult = dbCollection.updateOne(finder, updateCmd);
 
@@ -457,11 +457,9 @@ public class FloorPlanFragment extends Fragment implements Callable, DeleteOnCli
 
         Document finder = new Document().append("_id", this.data.get_id());
         Document updateCmd = new Document().append("$set",
-                new Document().append("FloorPlan", data));
+                new Document().append("FloorPlan", data).append("Exported", false));
 
         final Task<RemoteUpdateResult> tResult = dbCollection.updateOne(finder, updateCmd);
-
-        int finalPosition = dot;
 
         tResult.addOnCompleteListener(task -> {
             if(task.isSuccessful()){

@@ -71,7 +71,7 @@ public class PageHeader implements IEventHandler {
 
         Rectangle rect = new Rectangle(coordX, coordY, width, height);
 
-        new Canvas(canvas, pdfDoc, rect)
+        new Canvas(canvas, rect)
                 .add(table)
                 .close();
     }
@@ -102,24 +102,39 @@ public class PageHeader implements IEventHandler {
 
         table.addCell(new Cell(2, 1).add(img).setBorder(Border.NO_BORDER));
 
-        Paragraph companyP = new Paragraph("Two Brothers Home Renovation").setBold();
-        companyP.setFontSize(14f);
+        Paragraph companyP = new Paragraph("Two Brothers Home Renovation (SA0551750-X)").setBold();
+        companyP.setFontSize(10f);
         companyP.setTextAlignment(TextAlignment.LEFT);
         companyP.setFixedLeading(0);
         companyP.setMultipliedLeading(0.5f);
-        companyP.setMarginBottom(7f);
-        companyP.setMarginTop(16f);
+        companyP.setMarginBottom(1f);
+        companyP.setMarginTop(10f);
         companyP.setMarginLeft(30f);
-        table.addCell(new Cell(1, 1).add(companyP).setBorder(Border.NO_BORDER));
 
-        Paragraph companyReg = new Paragraph("Reg No: SA0551750-X");
-        companyReg.setFontSize(11f);
-        companyReg.setTextAlignment(TextAlignment.LEFT);
-        companyReg.setFixedLeading(0);
-        companyReg.setMultipliedLeading(1);
-        companyReg.setMarginBottom(5f);
-        companyReg.setMarginLeft(30f);
-        table.addCell(new Cell(1,1).add(companyReg).setBorder(Border.NO_BORDER));
+        Paragraph slogan = new Paragraph("(Specialty in Smart Home Build & Flooring)").setItalic();
+        slogan.setFontSize(5.5f);
+        slogan.setTextAlignment(TextAlignment.LEFT);
+        slogan.setMarginLeft(30f);
+
+        table.addCell(new Cell(1, 1).add(companyP).add(slogan).setBorder(Border.NO_BORDER));
+
+        Paragraph companyF1 = new Paragraph("12A, Lilitan Batu Maung, Taman Seri Indah");
+        companyF1.setFontSize(7f);
+        companyF1.setTextAlignment(TextAlignment.LEFT);
+        companyF1.setMarginLeft(30f);
+        companyF1.setMultipliedLeading(0.5f);
+
+        Paragraph companyF2 = new Paragraph("11960 Batu Maung, Pulau Pinang");
+        companyF2.setFontSize(7f);
+        companyF2.setTextAlignment(TextAlignment.LEFT);
+        companyF2.setMarginLeft(30f);
+
+        Paragraph companyF3 = new Paragraph("H/P: 016-721 2087 (Kelvin) / 012-439 1156 (Oscar), Email: tb_homerenovation@gmail.com");
+        companyF3.setFontSize(7f);
+        companyF3.setTextAlignment(TextAlignment.LEFT);
+        companyF3.setMarginLeft(30f);
+
+        table.addCell(new Cell(1,1).add(companyF1).add(companyF2).add(companyF3).setBorder(Border.NO_BORDER).setMarginTop(4f));
 
         table.addCell(new Cell(1,2).add(separator));
 

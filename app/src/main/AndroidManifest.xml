@@ -9,6 +9,11 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
 
     <application
         android:allowBackup="true"
@@ -17,8 +22,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".core.database.MainProcessApp"
-        android:requestLegacyExternalStorage="true">
+        android:name=".core.core.CoreProcessor"
+        android:requestLegacyExternalStorage="true"
+        android:hardwareAccelerated="true">
+
+        <activity
+            android:name=".LoadingActivity"
+            android:label="@string/app_name"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".MainActivity"
@@ -26,9 +45,15 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="http"
+                    android:host="example.com"
+                    android:pathPrefix="/main"
+                    />
             </intent-filter>
         </activity>
 
@@ -41,6 +66,12 @@
         <activity
             android:name=".ui.mainpg.AddNewActivity"
             android:label="@string/title_addcustomer"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.lists.QrScanner"
+            android:label="@string/title_qr"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
