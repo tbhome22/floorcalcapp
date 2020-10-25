@@ -16,7 +16,7 @@
         <item
             android:id="@+id/navigation_ratepg"
             android:icon="@drawable/ic_money"
-            android:title="Rate" />
+            android:title="@string/title_rate" />
 
         <item
             android:id="@+id/navigation_addpg"

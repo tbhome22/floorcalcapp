@@ -3,19 +3,24 @@ package com.example.floorboardcalculator.ui.mainpg;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.floorboardcalculator.R;
+import com.example.floorboardcalculator.core.process.ControlActivity;
+import com.example.floorboardcalculator.ui.addon.InternetStatus;
 import com.example.floorboardcalculator.ui.mainpg.addFragment.IWizardListener;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-public class AddNewActivity extends AppCompatActivity implements IWizardListener {
+public class AddNewActivity extends ControlActivity implements IWizardListener {
     private static final String TAG = AddNewActivity.class.getSimpleName();
     private ViewPager2 pager;
     private TabLayout tabLayout;
@@ -129,5 +134,16 @@ public class AddNewActivity extends AppCompatActivity implements IWizardListener
         super.onStop();
 
         this.finish();
+    }
+
+    @Nullable
+    @Override
+    public Menu getMenu() {
+        return null;
+    }
+
+    @Override
+    public void tickConnectionStatus(InternetStatus status, int counter) {
+        super.tickConnectionStatus(status, counter);
     }
 }

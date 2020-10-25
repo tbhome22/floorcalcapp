@@ -1,4 +1,4 @@
-package com.example.floorboardcalculator.core.core;
+package com.example.floorboardcalculator.core.process;
 
 import android.app.Application;
 import android.content.SharedPreferences;

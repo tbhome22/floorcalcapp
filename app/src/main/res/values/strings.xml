@@ -91,5 +91,6 @@
     <string name="add_confirm_check">I hereby agree that the information provided is true.</string>
     <string name="search_hint">Customer Name (Press Enter to submit)</string>
     <string name="qr_scan_notice">Please position camera to QR code on checklist.</string>
+    <string name="wifi_status">wifi status</string>
 
 </resources>

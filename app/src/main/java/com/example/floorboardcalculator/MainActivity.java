@@ -1,8 +1,15 @@
 package com.example.floorboardcalculator;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Toast;
 
+import com.example.floorboardcalculator.core.process.ControlActivity;
+import com.example.floorboardcalculator.ui.addon.InternetDialog;
+import com.example.floorboardcalculator.ui.addon.InternetStatus;
 import com.example.floorboardcalculator.ui.lists.ListDataFragment;
 import com.example.floorboardcalculator.ui.mainpg.HomeFragment;
 import com.example.floorboardcalculator.ui.rate.RateFragment;
@@ -15,7 +22,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ControlActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private NavController navController;
@@ -88,5 +95,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    @Override
+    public Menu getMenu() {
+        return null;
+    }
+
+    @Override
+    public void tickConnectionStatus(InternetStatus status, int counter) {
+        super.tickConnectionStatus(status, counter);
     }
 }

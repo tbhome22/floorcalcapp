@@ -66,10 +66,8 @@ public class FloorPlanFragment extends Fragment implements Callable, DeleteOnCli
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_detailpage_03, container, false);
-
-        return v;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)  {
+        return inflater.inflate(R.layout.fragment_detailpage_03, container, false);
     }
 
     @Override

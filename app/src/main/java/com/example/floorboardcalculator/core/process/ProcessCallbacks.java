@@ -1,33 +1,57 @@
-package com.example.floorboardcalculator.core.core;
+package com.example.floorboardcalculator.core.process;
 
 import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentCallbacks2;
+import android.content.Context;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Process;
 import android.util.Log;
+import android.view.Menu;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 
 import com.example.floorboardcalculator.LoadingActivity;
 import com.example.floorboardcalculator.R;
+import com.example.floorboardcalculator.ui.addon.InternetDialog;
+import com.example.floorboardcalculator.ui.addon.InternetStatus;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-public class ProcessCallbacks implements Application.ActivityLifecycleCallbacks, ComponentCallbacks2 {
+public class ProcessCallbacks implements Application.ActivityLifecycleCallbacks, ComponentCallbacks2, Runnable {
     private static final String TAG = ProcessCallbacks.class.getSimpleName();
     private static boolean isInBackground = false;
     private CoreProcessor currentProcessor;
+    private AlertDialog dialog = null;
+    private InternetDialog inetDialog = null;
 
     private List<Activity> activeActivities;
     private List<String> activeName;
+
+    private final ScheduledExecutorService statusService;
+
+    private int noConnTimer = 0;
 
     public ProcessCallbacks(CoreProcessor currentProcessor) {
         activeActivities = new ArrayList<Activity>();
         activeName = new ArrayList<String>();
         this.currentProcessor = currentProcessor;
+
+        statusService = Executors.newSingleThreadScheduledExecutor();
+        statusService.scheduleAtFixedRate(this, 0, 1, TimeUnit.SECONDS);
     }
 
     @Override
@@ -156,7 +180,8 @@ public class ProcessCallbacks implements Application.ActivityLifecycleCallbacks,
 
             if(activeActivities.size() == 0) {
                 currentProcessor.logoutRealm();
-                Runtime.getRuntime().exit(1);
+                statusService.shutdown();
+                System.exit(0);
             }
         }
 
@@ -169,8 +194,14 @@ public class ProcessCallbacks implements Application.ActivityLifecycleCallbacks,
             Log.d(TAG, "App goes to background, system exit call!");
             isInBackground = true;
 
+
+            if(activeActivities.size() > 0) {
+                activeActivities.get(activeActivities.size() - 1).finishAffinity();
+            }
+
             currentProcessor.logoutRealm();
-            Runtime.getRuntime().exit(1);
+            statusService.shutdown();
+            System.exit(0);
         }
     }
 
@@ -182,5 +213,69 @@ public class ProcessCallbacks implements Application.ActivityLifecycleCallbacks,
     @Override
     public void onLowMemory() {
 
+    }
+
+    @Override
+    public void run() {
+        if(activeActivities.size() > 0) {
+            Activity latest = activeActivities.get(activeActivities.size() - 1);
+
+            if(latest instanceof ControlActivity) {
+                ControlActivity current = (ControlActivity) latest;
+
+                if(isNetworkAvailable(current)) {
+                    if(isInternetAvailable()) {
+                        current.tickConnectionStatus(InternetStatus.INTERNET_OK, 0);
+                        noConnTimer = 0;
+                    }
+                    else {
+                        if(noConnTimer >= 30) {
+                            if(activeActivities.size() > 0) {
+                                activeActivities.get(activeActivities.size() - 1).finishAffinity();
+                            }
+
+                            currentProcessor.logoutRealm();
+                            statusService.shutdown();
+                            System.exit(0);
+                        }
+                        else {
+                            current.tickConnectionStatus(InternetStatus.INTERNET_NOIP, (30 - noConnTimer));
+                            noConnTimer++;
+                        }
+                    }
+                }
+                else {
+                    if(noConnTimer >= 30) {
+                        if(activeActivities.size() > 0) {
+                            activeActivities.get(activeActivities.size() - 1).finishAffinity();
+                        }
+
+                        currentProcessor.logoutRealm();
+                        statusService.shutdown();
+                        System.exit(0);
+                    }
+                    else {
+                        current.tickConnectionStatus(InternetStatus.INTERNET_NOCONNECTED, (30 - noConnTimer));
+                        noConnTimer++;
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean isNetworkAvailable(@NotNull Context context) {
+        ConnectivityManager manager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+
+        return manager.getActiveNetworkInfo() != null && manager.getActiveNetworkInfo().isConnected();
+    }
+
+    private boolean isInternetAvailable() {
+        try{
+            InetAddress address = InetAddress.getByName("www.google.com");
+            return !address.equals("");
+        }
+        catch(UnknownHostException e) { }
+
+        return false;
     }
 }

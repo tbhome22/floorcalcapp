@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.print.PrintAttributes;
 import android.print.PrintManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -25,6 +28,8 @@ import com.example.floorboardcalculator.core.config.PreferenceItem;
 import com.example.floorboardcalculator.core.datamodel.Config;
 import com.example.floorboardcalculator.core.datamodel.Customer;
 import com.example.floorboardcalculator.core.datamodel.FloorType;
+import com.example.floorboardcalculator.core.process.ControlActivity;
+import com.example.floorboardcalculator.ui.addon.InternetStatus;
 import com.example.floorboardcalculator.ui.mainpg.ZoomAnimation;
 import com.example.floorboardcalculator.ui.pagerdetails.fragments.PagerListener;
 import com.example.floorboardcalculator.ui.pdf.PDFDoneListener;
@@ -54,7 +59,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class CustomerInformationActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, PagerListener {
+public class CustomerInformationActivity extends ControlActivity implements SwipeRefreshLayout.OnRefreshListener, PagerListener {
     private static final String TAG = CustomerInformationActivity.class.getSimpleName();
     private static final String APP_PREF = "TWO_BROTHER_SETTING";
 
@@ -331,6 +336,17 @@ public class CustomerInformationActivity extends AppCompatActivity implements Sw
         setting.setDoubleUnit(preferences.getBoolean("doubleUnit", false));
         setting.setUnitSelect(preferences.getInt("unitSelect", -1));
         setting.setPriceExp(preferences.getBoolean("priceExp", true));
+    }
+
+    @Nullable
+    @Override
+    public Menu getMenu() {
+        return null;
+    }
+
+    @Override
+    public void tickConnectionStatus(InternetStatus status, int counter) {
+        super.tickConnectionStatus(status, counter);
     }
 
     public class AwaitProcess implements Runnable {

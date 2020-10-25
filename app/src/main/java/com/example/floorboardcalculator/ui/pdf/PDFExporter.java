@@ -206,17 +206,17 @@ public class PDFExporter implements Serializable {
             secTb[8] = new Cell(2, 2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c5_1));
             secTb[9] = new Cell(2, 4).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c5_2));
 
+            Text c8_1 = new Text("Notes: "), c8_2 = new Text((customer.getNotes().length() > 0) ? customer.getNotes() : "No notes.").setBold();
+            secTb[10] = new Cell(1, 6).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c8_1));
+            secTb[11] = new Cell(3, 6).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c8_2));
+
             Text c6_1 = new Text("City: "), c6_2 = new Text(customer.getCity()).setBold();
-            secTb[10] = new Cell(1,2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c6_1));
-            secTb[11] = new Cell(1,4).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c6_2));
+            secTb[12] = new Cell(1,2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c6_1));
+            secTb[13] = new Cell(1,4).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c6_2));
 
             Text c7_1 = new Text("State: "), c7_2 = new Text(StateList.getState(customer.getState())).setBold();
-            secTb[12] = new Cell(1, 2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c7_1));
-            secTb[13] = new Cell(1, 4).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c7_2));
-
-            Text c8_1 = new Text("Notes: "), c8_2 = new Text((customer.getNotes().length() > 0) ? customer.getNotes() : "No notes.").setBold();
-            secTb[14] = new Cell(1, 2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c8_1)).setPaddingBottom(10f);
-            secTb[15] = new Cell(1, 10).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c8_2)).setPaddingBottom(10f);
+            secTb[14] = new Cell(1, 2).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c7_1));
+            secTb[15] = new Cell(1, 4).setTextAlignment(TextAlignment.LEFT).add(new Paragraph().add(c7_2));
 
             for(Cell i : secTb) {
                 i.setBorder(new DottedBorder(2f));

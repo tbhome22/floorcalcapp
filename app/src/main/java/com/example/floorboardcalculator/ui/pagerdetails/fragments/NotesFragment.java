@@ -48,9 +48,7 @@ public class NotesFragment extends Fragment implements Callable{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_detailpage_05, container, false);
-
-        return v;
+        return inflater.inflate(R.layout.fragment_detailpage_05, container, false);
     }
 
     @Override

@@ -4,13 +4,18 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageButton;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.floorboardcalculator.R;
+import com.example.floorboardcalculator.core.process.ControlActivity;
+import com.example.floorboardcalculator.ui.addon.InternetStatus;
 import com.google.zxing.Result;
 
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 
-public class QrScanner extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+public class QrScanner extends ControlActivity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
     private ImageButton mFlashToggle;
     private Result scannedResult = null;
@@ -82,5 +87,16 @@ public class QrScanner extends AppCompatActivity implements ZXingScannerView.Res
         ToneGenerator tone = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
 
         tone.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
+    }
+
+    @Nullable
+    @Override
+    public Menu getMenu() {
+        return null;
+    }
+
+    @Override
+    public void tickConnectionStatus(InternetStatus status, int counter) {
+        super.tickConnectionStatus(status, counter);
     }
 }
